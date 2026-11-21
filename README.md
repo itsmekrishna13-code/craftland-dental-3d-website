@@ -4,7 +4,7 @@ A modern dental clinic website with interactive 3D scenes, built with React, Vit
 
 ## Live site
 
-**https://craftland-dental-3d-website.vercel.app**
+**https://craftlanddental.vercel.app**
 
 Deployed on Vercel from this repository. Every push to `main` is deployed automatically.
 
