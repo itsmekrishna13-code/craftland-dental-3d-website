@@ -12,15 +12,6 @@ export default function SmileGallery() {
             title="Drag to see the difference."
             description="Compare sample smile transformations with the interactive slider. The images are demonstration visuals created for illustration, not photographs of real patient outcomes."
           />
-          <Reveal delay={0.2}>
-            <div className="inline-flex max-w-sm items-start gap-3 rounded-2xl border border-gold/40 bg-cream px-5 py-4 text-sm leading-relaxed text-forest-deep">
-              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-gold" />
-              <span>
-                <strong className="font-semibold">SAMPLE / DEMO imagery.</strong> Results vary between individuals and
-                are never guaranteed.
-              </span>
-            </div>
-          </Reveal>
         </div>
 
         <div className="mt-16 grid gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">

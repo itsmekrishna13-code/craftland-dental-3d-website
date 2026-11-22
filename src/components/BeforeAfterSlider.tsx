@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import {
   animate,
-  motion,
+  m,
   useInView,
   useMotionTemplate,
   useMotionValue,
@@ -117,7 +117,7 @@ export function BeforeAfterSlider({
       </div>
 
       {/* Before (clipped layer) */}
-      <motion.div className="absolute inset-0" style={{ clipPath }}>
+      <m.div className="absolute inset-0" style={{ clipPath }}>
         <SafeImage
           src={before}
           alt={altBefore}
@@ -128,7 +128,7 @@ export function BeforeAfterSlider({
           className="h-full w-full"
           imgClassName="pointer-events-none"
         />
-      </motion.div>
+      </m.div>
 
       {/* Labels */}
       <span className="pointer-events-none absolute left-4 top-4 z-10 rounded-full bg-forest-deep/70 px-3 py-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-ivory backdrop-blur-sm">
@@ -139,14 +139,14 @@ export function BeforeAfterSlider({
       </span>
 
       {/* Divider line */}
-      <motion.div
+      <m.div
         aria-hidden
         className="pointer-events-none absolute inset-y-0 z-10 w-[2px] -translate-x-1/2 bg-ivory shadow-[0_0_18px_rgba(255,255,255,0.7)]"
         style={{ left }}
       />
 
       {/* Handle */}
-      <motion.div
+      <m.div
         role="slider"
         tabIndex={0}
         aria-label="Drag to compare before and after"
@@ -159,7 +159,7 @@ export function BeforeAfterSlider({
       >
         <ChevronLeft className="h-4 w-4" />
         <ChevronRight className="h-4 w-4" />
-      </motion.div>
+      </m.div>
 
       {/* Hint */}
       <div className="pointer-events-none absolute bottom-4 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-ivory/85 px-4 py-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-forest-deep backdrop-blur-sm">

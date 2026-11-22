@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import { Button, CountUp, Reveal, SplitWords } from "./ui";
 import { MEDIA, STATS } from "../data/content";
@@ -118,7 +118,7 @@ export default function Hero() {
       </div>
 
       <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-6">
-        <motion.div style={{ y: textY }} className="relative z-10 lg:col-span-6">
+        <m.div style={{ y: textY }} className="relative z-10 lg:col-span-6">
           <Reveal immediate>
             <div className="inline-flex items-center gap-3 rounded-full border border-forest/15 bg-cream/80 px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-forest">
               <span className="relative flex h-2 w-2">
@@ -163,9 +163,9 @@ export default function Hero() {
               </div>
             ))}
           </Reveal>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           style={{ y: visualY }}
           className="relative h-[440px] sm:h-[580px] lg:col-span-6 lg:h-[680px]"
         >
@@ -184,7 +184,7 @@ export default function Hero() {
             )}
           </div>
 
-          <motion.div
+          <m.div
             animate={{ y: [0, -12, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             className="glass absolute left-0 top-[16%] flex items-center gap-3 rounded-2xl border border-white/60 px-4 py-3 shadow-[0_20px_50px_-30px_rgba(17,36,25,0.5)] sm:left-2"
@@ -196,9 +196,9 @@ export default function Hero() {
               <span className="block text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold">Smile preview</span>
               <span className="font-serif text-lg leading-tight text-forest-deep">Digital 3D planning</span>
             </span>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             animate={{ y: [0, 12, 0] }}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
             className="glass absolute bottom-[12%] right-0 flex items-center gap-3 rounded-2xl border border-white/60 px-4 py-3 shadow-[0_20px_50px_-30px_rgba(17,36,25,0.5)] sm:right-2"
@@ -210,8 +210,8 @@ export default function Hero() {
               <span className="block text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-gold">Care standard</span>
               <span className="font-serif text-lg leading-tight text-forest-deep">Hand-finished precision</span>
             </span>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </div>
 
       <a

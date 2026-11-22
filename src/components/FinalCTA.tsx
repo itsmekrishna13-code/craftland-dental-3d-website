@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Button, Reveal, SafeImage, SplitWords } from "./ui";
 import { MEDIA, SITE } from "../data/content";
 import { Phone } from "lucide-react";
@@ -6,7 +6,7 @@ import { Phone } from "lucide-react";
 export default function FinalCTA() {
   return (
     <section className="relative isolate overflow-hidden py-28 sm:py-36 lg:py-44">
-      <motion.div
+      <m.div
         aria-hidden
         className="absolute inset-0 -z-20"
         initial={{ scale: 1.08 }}
@@ -15,7 +15,7 @@ export default function FinalCTA() {
         transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
       >
         <SafeImage src={MEDIA.ctaBg} alt="" className="h-full w-full" />
-      </motion.div>
+      </m.div>
       <div aria-hidden className="absolute inset-0 -z-10 bg-forest-deep/85" />
       <div
         aria-hidden

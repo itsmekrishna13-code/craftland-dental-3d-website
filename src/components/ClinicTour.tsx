@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { VideoPlayer } from "./VideoPlayer";
 import { Reveal, SafeImage, SectionHeading, cx } from "./ui";
 import { MEDIA, TOUR_SCENES } from "../data/content";
@@ -73,7 +73,7 @@ export default function ClinicTour() {
           <div id="tour-panel" role="tabpanel" aria-labelledby={`tour-tab-${index}`} className="lg:col-span-8">
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-champagne sm:aspect-[16/10]">
               <AnimatePresence mode="wait">
-                <motion.div
+                <m.div
                   key={scene.label}
                   initial={{ opacity: 0, scale: 1.04 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -82,7 +82,7 @@ export default function ClinicTour() {
                   className="absolute inset-0"
                 >
                   <SafeImage src={scene.image} alt={`${scene.label}: ${scene.title}`} label={scene.label} className="h-full w-full" />
-                </motion.div>
+                </m.div>
               </AnimatePresence>
               <span className="absolute left-5 top-5 z-10 rounded-full bg-cream/90 px-4 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-forest backdrop-blur">
                 {scene.label}

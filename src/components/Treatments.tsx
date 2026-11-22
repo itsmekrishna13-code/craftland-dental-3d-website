@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowRight, Check, Clock } from "lucide-react";
 import { Button, Reveal, SafeImage, SectionHeading } from "./ui";
 import { Modal } from "./Modal";
@@ -28,7 +28,7 @@ export default function Treatments() {
         <div className="mt-16 grid gap-x-7 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
           {TREATMENTS.map((t, i) => (
             <Reveal key={t.id} delay={(i % 3) * 0.08} className="h-full">
-              <motion.article
+              <m.article
                 whileHover={{ y: -8 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="group flex h-full flex-col"
@@ -69,7 +69,7 @@ export default function Treatments() {
                     </button>
                   </div>
                 </div>
-              </motion.article>
+              </m.article>
             </Reveal>
           ))}
         </div>

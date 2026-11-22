@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence, motion, type PanInfo } from "framer-motion";
+import { AnimatePresence, m, type PanInfo } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Reveal, SafeImage, SectionHeading, CountUp, cx } from "./ui";
 import { TESTIMONIALS } from "../data/content";
@@ -95,7 +95,7 @@ export default function Testimonials() {
 
               <div className="min-h-[330px] sm:min-h-[300px]">
                 <AnimatePresence mode="wait" custom={dir} initial={false}>
-                  <motion.div
+                  <m.div
                     key={t.id}
                     custom={dir}
                     variants={variants}
@@ -133,7 +133,7 @@ export default function Testimonials() {
                         <p className="text-sm text-muted">{t.treatment}</p>
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 </AnimatePresence>
               </div>
 

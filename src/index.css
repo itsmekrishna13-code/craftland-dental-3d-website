@@ -1,5 +1,28 @@
 @import "tailwindcss";
 
+/* Self-hosted latin-subset variable fonts (same families/weights as before). */
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/cormorant-garamond-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/cormorant-garamond-italic-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/manrope-latin.woff2") format("woff2");
+}
+
 @theme {
   --color-ivory: #faf6ee;
   --color-cream: #fffdf8;
@@ -111,6 +134,52 @@
     background: linear-gradient(110deg, #efe7d6 8%, #faf6ee 18%, #efe7d6 33%);
     background-size: 200% 100%;
     animation: shimmer 1.6s linear infinite;
+  }
+
+  /* CSS equivalents of the earlier scroll-triggered fade / rise animations. */
+  .has-js .reveal {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 36px));
+    transition:
+      opacity var(--reveal-duration, 1s) var(--ease-premium) var(--reveal-delay, 0s),
+      transform var(--reveal-duration, 1s) var(--ease-premium) var(--reveal-delay, 0s);
+  }
+  .has-js .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .has-js .split-words > span > span {
+    opacity: 0;
+    transform: translateY(110%);
+    transition:
+      opacity 0.9s var(--ease-premium) var(--word-delay, 0s),
+      transform 0.9s var(--ease-premium) var(--word-delay, 0s);
+  }
+  .has-js .split-words.is-visible > span > span {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .has-js .reveal-image {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1.3s var(--ease-premium);
+  }
+  .has-js .reveal-image.is-visible {
+    clip-path: inset(0 0 0% 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .has-js .reveal,
+    .has-js .split-words > span > span {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .has-js .reveal-image {
+      clip-path: none;
+      transition: none;
+    }
   }
 }
 

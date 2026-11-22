@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { m, useScroll, useSpring } from "framer-motion";
 import Loader from "./components/Loader";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -34,7 +34,7 @@ export default function App() {
   return (
     <div className="min-h-screen overflow-x-clip bg-ivory text-ink">
       <Loader />
-      <motion.div
+      <m.div
         aria-hidden
         className="fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-gradient-to-r from-gold via-gold-soft to-gold"
         style={{ scaleX: progress }}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { Menu, Phone, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { Button, cx } from "./ui";
@@ -79,7 +79,7 @@ export default function Navbar() {
               >
                 {link.label}
                 {isActive && (
-                  <motion.span
+                  <m.span
                     layoutId="nav-underline"
                     className="absolute inset-x-3.5 -bottom-0.5 h-px bg-gold"
                     transition={{ type: "spring", stiffness: 380, damping: 32 }}
@@ -111,7 +111,7 @@ export default function Navbar() {
 
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             id="mobile-menu"
             key="mobile-menu"
             initial={{ opacity: 0 }}
@@ -122,7 +122,7 @@ export default function Navbar() {
           >
             <nav aria-label="Mobile" className="flex flex-col">
               {NAV_LINKS.map((link, i) => (
-                <motion.a
+                <m.a
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
@@ -133,7 +133,7 @@ export default function Navbar() {
                 >
                   <span className="font-serif text-[2.1rem] leading-none text-forest-deep">{link.label}</span>
                   <span className="text-xs tracking-[0.2em] text-gold">0{i + 1}</span>
-                </motion.a>
+                </m.a>
               ))}
             </nav>
 
@@ -145,7 +145,7 @@ export default function Navbar() {
                 <Phone className="h-4 w-4 text-gold" /> {SITE.phone}
               </a>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </header>

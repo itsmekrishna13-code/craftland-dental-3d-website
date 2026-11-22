@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Cpu, Heart, Target } from "lucide-react";
 import { Button, CountUp, Reveal, RevealImage, SectionHeading } from "./ui";
 import { MEDIA, STATS } from "../data/content";
@@ -34,7 +34,7 @@ export default function About() {
         {/* Split-screen imagery */}
         <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
           <div aria-hidden className="absolute -inset-4 -z-10 translate-x-4 translate-y-4 rounded-[2rem] border border-gold/35" />
-          <motion.div style={{ y: mainY }} className="relative aspect-[4/5] w-[86%] overflow-hidden rounded-[2rem]">
+          <m.div style={{ y: mainY }} className="relative aspect-[4/5] w-[86%] overflow-hidden rounded-[2rem]">
             <RevealImage
               immediate
               src={MEDIA.about}
@@ -46,9 +46,9 @@ export default function About() {
               style={{ aspectRatio: "4 / 5" }}
               className="h-full w-full"
             />
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             style={{ y: accentY }}
             className="absolute bottom-[-6%] right-0 aspect-square w-[46%] overflow-hidden rounded-[1.6rem] border-[10px] border-ivory shadow-[0_30px_60px_-30px_rgba(17,36,25,0.5)]"
           >
@@ -63,7 +63,7 @@ export default function About() {
               style={{ aspectRatio: "1 / 1" }}
               className="h-full w-full"
             />
-          </motion.div>
+          </m.div>
 
           {/* Rotating badge */}
           <div className="absolute left-0 top-[6%] hidden h-32 w-32 items-center justify-center rounded-full bg-forest text-ivory shadow-xl sm:flex">

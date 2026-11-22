@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
-import {
-  animate,
-  motion,
-  useInView,
-  useMotionValue,
-  useSpring,
-  type HTMLMotionProps,
-} from "framer-motion";
+import { animate, m, useInView, useMotionValue, useSpring } from "framer-motion";
 
 /** Tiny className joiner. */
 export function cx(...parts: Array<string | false | null | undefined>) {
@@ -16,8 +9,50 @@ export function cx(...parts: Array<string | false | null | undefined>) {
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /* ------------------------------------------------------------------ */
-/*  Scroll reveal                                                      */
+/*  Lightweight scroll reveal (CSS transitions + one shared observer)  */
 /* ------------------------------------------------------------------ */
+
+const revealCallbacks = new WeakMap<Element, () => void>();
+let revealObserver: IntersectionObserver | null = null;
+
+function getRevealObserver() {
+  if (typeof IntersectionObserver === "undefined") return null;
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          revealCallbacks.get(entry.target)?.();
+          revealCallbacks.delete(entry.target);
+          revealObserver?.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "-60px 0px -60px 0px" }
+    );
+  }
+  return revealObserver;
+}
+
+function useRevealClass<T extends HTMLElement>(enabled: boolean) {
+  const ref = useRef<T>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !enabled) return;
+    const show = () => el.classList.add("is-visible");
+    const observer = getRevealObserver();
+    if (!observer) {
+      show();
+      return;
+    }
+    revealCallbacks.set(el, show);
+    observer.observe(el);
+    return () => {
+      revealCallbacks.delete(el);
+      observer.unobserve(el);
+    };
+  }, [enabled]);
+  return ref;
+}
 
 type RevealProps = {
   children: ReactNode;
@@ -26,24 +61,28 @@ type RevealProps = {
   className?: string;
   duration?: number;
   immediate?: boolean;
-} & Omit<HTMLMotionProps<"div">, "children">;
+};
 
-export function Reveal({ children, delay = 0, y = 36, className, duration = 1, immediate = false, ...rest }: RevealProps) {
+export function Reveal({ children, delay = 0, y = 36, className, duration = 1, immediate = false }: RevealProps) {
   // Above-the-fold copy must paint at first render rather than waiting on an
   // IntersectionObserver-driven opacity transition.
+  const ref = useRevealClass<HTMLDivElement>(!immediate);
   if (immediate) return <div className={className}>{children}</div>;
 
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration, delay, ease: EASE }}
-      {...rest}
+    <div
+      ref={ref}
+      className={cx("reveal", className)}
+      style={
+        {
+          "--reveal-y": `${y}px`,
+          "--reveal-duration": `${duration}s`,
+          "--reveal-delay": `${delay}s`,
+        } as CSSProperties
+      }
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -66,39 +105,23 @@ export function SplitWords({
   stagger?: number;
   immediate?: boolean;
 }) {
-  const Tag = motion[as] as typeof motion.span;
+  const Tag = as as "span";
+  const ref = useRevealClass<HTMLElement>(!immediate);
   const words = text.split(" ");
-  if (immediate) {
-    return (
-      <Tag className={className} aria-label={text}>
-        {words.map((word, i) => (
-          <span key={`${word}-${i}`} className="inline-block overflow-hidden align-bottom pr-[0.25em] last:pr-0">
-            <span className="inline-block">{word}</span>
-          </span>
-        ))}
-      </Tag>
-    );
-  }
   return (
     <Tag
-      className={className}
+      ref={ref}
+      className={cx(className, !immediate && "split-words")}
       aria-label={text}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
-      variants={{ hidden: {}, visible: { transition: { staggerChildren: stagger, delayChildren: delay } } }}
     >
       {words.map((word, i) => (
         <span key={`${word}-${i}`} className="inline-block overflow-hidden align-bottom pr-[0.25em] last:pr-0">
-          <motion.span
+          <span
             className="inline-block"
-            variants={{
-              hidden: { y: "110%", opacity: 0 },
-              visible: { y: "0%", opacity: 1, transition: { duration: 0.9, ease: EASE } },
-            }}
+            style={{ "--word-delay": `${delay + i * stagger}s` } as CSSProperties}
           >
             {word}
-          </motion.span>
+          </span>
         </span>
       ))}
     </Tag>
@@ -184,14 +207,14 @@ export function Magnetic({
   };
 
   return (
-    <motion.div
+    <m.div
       className={cx("inline-block", className)}
       style={{ x: sx, y: sy }}
       onMouseMove={handleMove}
       onMouseLeave={reset}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -312,7 +335,7 @@ export function SafeImage({
       )}
 
       {show && status !== "error" && (
-        <motion.img
+        <img
           src={src}
           alt={alt}
           width={width}
@@ -321,9 +344,6 @@ export function SafeImage({
           decoding="async"
           onLoad={() => setStatus("loaded")}
           onError={() => setStatus("error")}
-          initial={reveal ? { scale: 1.12, opacity: 0 } : false}
-          animate={status === "loaded" ? { scale: 1, opacity: 1 } : {}}
-          transition={{ duration: 1.6, ease: EASE }}
           className={cx("h-full w-full object-cover", imgClassName)}
         />
       )}
@@ -335,6 +355,7 @@ export function SafeImage({
 export function RevealImage({ immediate = false, ...props }: Parameters<typeof SafeImage>[0] & { immediate?: boolean }) {
   // Images near the top of a section must never stay hidden behind a
   // scroll-triggered clip-path: render them eagerly with no reveal gate.
+  const ref = useRevealClass<HTMLDivElement>(!immediate);
   if (immediate) {
     return (
       <div className={props.className}>
@@ -344,15 +365,9 @@ export function RevealImage({ immediate = false, ...props }: Parameters<typeof S
   }
 
   return (
-    <motion.div
-      initial={{ clipPath: "inset(0 0 100% 0)" }}
-      whileInView={{ clipPath: "inset(0 0 0% 0)" }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 1.3, ease: EASE }}
-      className={props.className}
-    >
+    <div ref={ref} className={cx("reveal-image", props.className)}>
       <SafeImage {...props} className="h-full w-full" />
-    </motion.div>
+    </div>
   );
 }
 

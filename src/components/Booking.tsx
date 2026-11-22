@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ReactNode } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { AlertCircle, CheckCircle2, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Button, Reveal, SectionHeading, SafeImage, cx } from "./ui";
 import { HOURS, MEDIA, SITE, TREATMENTS } from "../data/content";
@@ -76,14 +76,14 @@ function Field({
       <div className="mt-2">{children}</div>
       <AnimatePresence>
         {error && (
-          <motion.span
+          <m.span
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             className="mt-2 flex items-center gap-1.5 text-xs text-red-700"
           >
             <AlertCircle className="h-3.5 w-3.5" /> {error}
-          </motion.span>
+          </m.span>
         )}
       </AnimatePresence>
     </label>
@@ -199,7 +199,7 @@ export default function Booking() {
           <Reveal delay={0.1} className="mt-12">
             <AnimatePresence mode="wait">
               {status === "success" && submitted ? (
-                <motion.div
+                <m.div
                   key="success"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -229,9 +229,9 @@ export default function Booking() {
                       Submit Another Request
                     </Button>
                   </div>
-                </motion.div>
+                </m.div>
               ) : (
-                <motion.form
+                <m.form
                   key="form"
                   noValidate
                   onSubmit={onSubmit}
@@ -349,7 +349,7 @@ export default function Booking() {
                       {status === "submitting" ? "Submitting…" : "Submit Appointment Request"}
                     </Button>
                   </div>
-                </motion.form>
+                </m.form>
               )}
             </AnimatePresence>
           </Reveal>

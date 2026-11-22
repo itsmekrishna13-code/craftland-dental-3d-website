@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Reveal, SectionHeading } from "./ui";
 import { FEATURES } from "../data/content";
 
@@ -22,7 +22,7 @@ export default function Features() {
         <div className="mt-16 grid gap-px overflow-hidden rounded-3xl border border-forest/10 bg-forest/10 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f, i) => (
             <Reveal key={f.title} delay={(i % 3) * 0.1} className="h-full">
-              <motion.article
+              <m.article
                 whileHover={{ backgroundColor: "#FAF6EE" }}
                 transition={{ duration: 0.5 }}
                 className="group relative flex h-full flex-col bg-cream p-8 sm:p-10"
@@ -40,7 +40,7 @@ export default function Features() {
                 <p className="mt-4 text-[0.95rem] leading-relaxed text-muted">{f.text}</p>
 
                 <span className="absolute bottom-0 left-8 right-8 h-px origin-left scale-x-0 bg-gold transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 sm:left-10 sm:right-10" />
-              </motion.article>
+              </m.article>
             </Reveal>
           ))}
         </div>

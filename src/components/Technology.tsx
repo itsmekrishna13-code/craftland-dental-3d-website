@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { VideoPlayer } from "./VideoPlayer";
 import { Reveal, SafeImage, SectionHeading } from "./ui";
 import { MEDIA, TECHNOLOGY } from "../data/content";
@@ -27,7 +27,7 @@ export default function Technology() {
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {TECHNOLOGY.map((t, i) => (
             <Reveal key={t.title} delay={(i % 3) * 0.08} className="h-full">
-              <motion.article
+              <m.article
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 className="group flex h-full flex-col overflow-hidden rounded-3xl border border-forest/10 bg-cream transition-shadow duration-700 hover:shadow-[0_30px_60px_-40px_rgba(17,36,25,0.5)]"
@@ -48,7 +48,7 @@ export default function Technology() {
                   <h3 className="font-serif text-2xl leading-tight text-forest-deep">{t.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-muted">{t.text}</p>
                 </div>
-              </motion.article>
+              </m.article>
             </Reveal>
           ))}
         </div>

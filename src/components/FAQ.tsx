@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { Plus } from "lucide-react";
 import { Button, Reveal, SectionHeading, cx } from "./ui";
 import { FAQS } from "../data/content";
@@ -57,7 +57,7 @@ export default function FAQ() {
                 </h3>
                 <AnimatePresence initial={false}>
                   {isOpen && (
-                    <motion.div
+                    <m.div
                       id={`faq-a-${i}`}
                       role="region"
                       aria-labelledby={`faq-q-${i}`}
@@ -68,7 +68,7 @@ export default function FAQ() {
                       className="overflow-hidden"
                     >
                       <p className="pb-7 pr-12 text-base leading-relaxed text-muted sm:pr-16">{item.a}</p>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
               </Reveal>
