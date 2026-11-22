@@ -136,6 +136,12 @@
     animation: shimmer 1.6s linear infinite;
   }
 
+  /* Keep quick-contact buttons out of the way while a dialog is open. */
+  body[data-modal-open="true"] [data-floating-actions] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   /* CSS equivalents of the earlier scroll-triggered fade / rise animations. */
   .has-js .reveal {
     opacity: 0;

@@ -8,7 +8,7 @@ const base =
 /** Fixed quick-contact stack, available on every screen. */
 export default function FloatingActions() {
   return (
-    <div aria-label="Quick contact" className="fixed bottom-5 right-4 z-50 flex flex-col gap-3 sm:bottom-8 sm:right-6">
+    <div data-floating-actions aria-label="Quick contact" className="fixed bottom-5 right-4 z-50 flex flex-col gap-3 sm:bottom-8 sm:right-6">
       <a
         href="#contact"
         aria-label="Book an appointment"
