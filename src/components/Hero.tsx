@@ -1,9 +1,26 @@
-import { useRef } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
-import { HeroScene } from "./three/DentalScenes";
 import { Button, CountUp, Reveal, SplitWords } from "./ui";
 import { MEDIA, STATS } from "../data/content";
+
+// Three.js is a heavy dependency: load it only after the page settles, and
+// never on small screens (a static poster is used there instead).
+const HeroScene = lazy(() => import("./three/DentalScenes").then((m) => ({ default: m.HeroScene })));
+
+function HeroPoster() {
+  return (
+    <img
+      src={MEDIA.heroPoster}
+      alt=""
+      aria-hidden="true"
+      width={760}
+      height={867}
+      decoding="async"
+      className="h-full w-full object-contain"
+    />
+  );
+}
 
 const PARTICLES = [
   { top: "14%", left: "6%", size: 6, delay: 0 },
@@ -22,6 +39,38 @@ export default function Hero() {
   const visualY = useTransform(scrollYProgress, [0, 1], [0, 140]);
   const textY = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
+  const [show3D, setShow3D] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+    let cancelled = false;
+    const enable = () => {
+      if (!cancelled) setShow3D(true);
+    };
+    const schedule = () => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(enable, { timeout: 2500 });
+      } else {
+        window.setTimeout(enable, 1200);
+      }
+    };
+    if (document.readyState === "complete") schedule();
+    else window.addEventListener("load", schedule, { once: true });
+    return () => {
+      cancelled = true;
+      window.removeEventListener("load", schedule);
+    };
+  }, [isMobile]);
+
   return (
     <section
       id="home"
@@ -33,18 +82,21 @@ export default function Hero() {
         aria-hidden
         className="absolute inset-0 -z-20 bg-[radial-gradient(55%_50%_at_78%_42%,#EEF2E9_0%,transparent_70%),radial-gradient(45%_40%_at_8%_95%,#F2E6D0_0%,transparent_70%)]"
       />
-      <video
-        aria-hidden
-        className="absolute inset-0 -z-10 hidden h-full w-full object-cover opacity-[0.16] grayscale md:block"
-        src={MEDIA.heroVideo}
-        poster={MEDIA.heroVideoPoster}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        onError={(e) => (e.currentTarget.style.display = "none")}
-      />
+      {/* Hidden on mobile — don't even request the video there (6 MB download). */}
+      {!isMobile && (
+        <video
+          aria-hidden
+          className="absolute inset-0 -z-10 h-full w-full object-cover opacity-[0.16] grayscale md:block"
+          src={MEDIA.heroVideo}
+          poster={MEDIA.heroVideoPoster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          onError={(e) => (e.currentTarget.style.display = "none")}
+        />
+      )}
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-ivory via-ivory/85 to-ivory/30" />
 
       {/* Floating particles */}
@@ -123,7 +175,13 @@ export default function Hero() {
           />
           <div aria-hidden className="absolute inset-[12%] rounded-full border border-gold/20" />
           <div className="absolute inset-0">
-            <HeroScene />
+            {show3D && !isMobile ? (
+              <Suspense fallback={<HeroPoster />}>
+                <HeroScene />
+              </Suspense>
+            ) : (
+              <HeroPoster />
+            )}
           </div>
 
           <motion.div

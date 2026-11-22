@@ -1,8 +1,11 @@
-import { useRef, useState } from "react";
-import { useScroll, useTransform } from "framer-motion";
+import { lazy, Suspense, useRef, useState } from "react";
+import { useInView, useScroll, useTransform } from "framer-motion";
 import { Layers } from "lucide-react";
-import { AnatomyScene, type LayerVisibility } from "./three/DentalScenes";
+import type { LayerVisibility } from "./three/DentalScenes";
 import { Reveal, SectionHeading, cx } from "./ui";
+
+// Defer the heavy Three.js bundle until this section is close to the viewport.
+const AnatomyScene = lazy(() => import("./three/DentalScenes").then((m) => ({ default: m.AnatomyScene })));
 
 const LAYERS: { key: keyof LayerVisibility; label: string; text: string }[] = [
   {
@@ -24,6 +27,8 @@ const LAYERS: { key: keyof LayerVisibility; label: string; text: string }[] = [
 
 export default function DentalExperience() {
   const ref = useRef<HTMLElement>(null);
+  const sceneWrapRef = useRef<HTMLDivElement>(null);
+  const sceneInView = useInView(sceneWrapRef, { once: true, margin: "300px" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   // Scroll-linked rotation: the anatomy turns as you move through the section.
   const scrollSpin = useTransform(scrollYProgress, [0, 1], [0, 1]);
@@ -102,8 +107,12 @@ export default function DentalExperience() {
               className="absolute inset-[6%] rounded-full border border-gold/20 shadow-[inset_0_0_120px_rgba(184,152,94,0.08)]"
             />
             <div aria-hidden className="absolute inset-[18%] rounded-full border border-ivory/5" />
-            <div className="absolute inset-0 cursor-grab active:cursor-grabbing">
-              <AnatomyScene layers={layers} progress={scrollSpin} />
+            <div ref={sceneWrapRef} className="absolute inset-0 cursor-grab active:cursor-grabbing">
+              {sceneInView && (
+                <Suspense fallback={null}>
+                  <AnatomyScene layers={layers} progress={scrollSpin} />
+                </Suspense>
+              )}
             </div>
 
             <div className="glass absolute left-3 top-3 flex items-center gap-2 rounded-full px-4 py-2 text-[0.7rem] font-medium tracking-wide text-forest-deep sm:left-6 sm:top-6">

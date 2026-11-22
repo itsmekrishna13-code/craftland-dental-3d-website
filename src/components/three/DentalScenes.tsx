@@ -1,13 +1,6 @@
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  ContactShadows,
-  Environment,
-  Float,
-  Lightformer,
-  OrbitControls,
-  Sparkles,
-} from "@react-three/drei";
+import { Environment, Float, Lightformer, OrbitControls, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { MotionValue } from "framer-motion";
@@ -64,7 +57,7 @@ const PULP_PROFILE: Profile = [
   [0.001, 0.98],
 ];
 
-function buildTooth(profile: Profile, cusps: number, cuspAmp: number, segments = 128) {
+function buildTooth(profile: Profile, cusps: number, cuspAmp: number, segments = 64) {
   const points = profile.map(([x, y]) => new THREE.Vector2(x, y));
   const lathe = new THREE.LatheGeometry(points, segments);
   lathe.deleteAttribute("normal");
@@ -141,7 +134,7 @@ function StudioLights() {
   return (
     <>
       <ambientLight intensity={0.5} />
-      <directionalLight position={[3, 5, 4]} intensity={1.7} color="#FFF3E0" castShadow shadow-mapSize={[1024, 1024]} />
+      <directionalLight position={[3, 5, 4]} intensity={1.7} color="#FFF3E0" />
       <spotLight position={[-4, 3, 3]} intensity={24} angle={0.6} penumbra={1} color="#F5E2BD" />
       <pointLight position={[2.4, -2, 3]} intensity={5} color="#9FB097" />
     </>
@@ -184,14 +177,14 @@ function HeroToothCluster() {
   return (
     <group ref={tilt}>
       <group ref={spin}>
-        <mesh geometry={molar} material={enamel} castShadow receiveShadow />
+        <mesh geometry={molar} material={enamel} />
       </group>
 
       <mesh rotation={[Math.PI / 2.3, 0.2, 0]} material={gold}>
-        <torusGeometry args={[2.05, 0.012, 16, 240]} />
+        <torusGeometry args={[2.05, 0.012, 16, 96]} />
       </mesh>
       <mesh rotation={[Math.PI / 2.9, -0.4, 0.5]} material={gold}>
-        <torusGeometry args={[2.35, 0.006, 16, 240]} />
+        <torusGeometry args={[2.35, 0.006, 16, 96]} />
       </mesh>
 
       <mesh
@@ -200,7 +193,6 @@ function HeroToothCluster() {
         position={[-2.25, 0.9, -0.6]}
         rotation={[0.3, 0.6, -0.4]}
         scale={0.42}
-        castShadow
       />
       <mesh
         geometry={incisor}
@@ -208,7 +200,6 @@ function HeroToothCluster() {
         position={[2.2, -1.05, -0.5]}
         rotation={[-0.2, -0.9, 0.5]}
         scale={0.34}
-        castShadow
       />
     </group>
   );
@@ -216,22 +207,16 @@ function HeroToothCluster() {
 
 export function HeroScene() {
   return (
-    <Canvas
-      dpr={[1, 1.6]}
-      shadows="percentage"
-      camera={{ position: [0, 0, 8.6], fov: 34 }}
-      gl={{ antialias: true, alpha: true }}
-    >
+    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 8.6], fov: 34 }} gl={{ antialias: false, alpha: true }}>
       <StudioLights />
       <Suspense fallback={null}>
-        <Environment resolution={256} frames={1}>
+        <Environment resolution={128} frames={1}>
           {lightformers}
         </Environment>
         <Float speed={1.5} rotationIntensity={0.25} floatIntensity={1.2} floatingRange={[-0.15, 0.15]}>
           <HeroToothCluster />
         </Float>
-        <Sparkles count={50} scale={[9, 6, 4]} size={3} speed={0.25} color="#D9C395" opacity={0.85} />
-        <ContactShadows position={[0, -2.6, 0]} opacity={0.35} scale={9} blur={2.8} far={4} color="#1E3A2F" />
+        <Sparkles count={30} scale={[9, 6, 4]} size={3} speed={0.25} color="#D9C395" opacity={0.85} />
       </Suspense>
     </Canvas>
   );
@@ -268,7 +253,7 @@ function AnatomyModel({ layers, progress }: { layers: LayerVisibility; progress:
       onPointerOver={() => (hovered.current = true)}
       onPointerOut={() => (hovered.current = false)}
     >
-      <mesh geometry={molar} visible={layers.enamel} castShadow receiveShadow renderOrder={2}>
+      <mesh geometry={molar} visible={layers.enamel} renderOrder={2}>
         <meshPhysicalMaterial
           color="#F7F2E7"
           roughness={0.18}
@@ -286,13 +271,12 @@ function AnatomyModel({ layers, progress }: { layers: LayerVisibility; progress:
         visible={layers.dentin}
         scale={[0.86, 0.9, 0.86]}
         position={[0, -0.02, 0]}
-        castShadow
         renderOrder={1}
       >
         <meshStandardMaterial color="#E8D6B0" roughness={0.42} />
       </mesh>
 
-      <mesh geometry={pulp} visible={layers.pulp} castShadow>
+      <mesh geometry={pulp} visible={layers.pulp}>
         <meshStandardMaterial color="#C4574E" roughness={0.35} emissive="#3d0f0c" emissiveIntensity={0.25} />
       </mesh>
     </group>
@@ -301,20 +285,14 @@ function AnatomyModel({ layers, progress }: { layers: LayerVisibility; progress:
 
 export function AnatomyScene({ layers, progress }: { layers: LayerVisibility; progress: MotionValue<number> }) {
   return (
-    <Canvas
-      dpr={[1, 1.6]}
-      camera={{ position: [0, 0.3, 6.2], fov: 32 }}
-      gl={{ antialias: true, alpha: true }}
-      shadows="percentage"
-    >
+    <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0.3, 6.2], fov: 32 }} gl={{ antialias: false, alpha: true }}>
       <StudioLights />
       <Suspense fallback={null}>
-        <Environment resolution={256} frames={1}>
+        <Environment resolution={128} frames={1}>
           {lightformers}
         </Environment>
         <AnatomyModel layers={layers} progress={progress} />
-        <Sparkles count={28} scale={[6, 4, 3]} size={2.4} speed={0.2} color="#D9C395" opacity={0.7} />
-        <ContactShadows position={[0, -2.1, 0]} opacity={0.3} scale={8} blur={2.6} far={4} color="#1E3A2F" />
+        <Sparkles count={18} scale={[6, 4, 3]} size={2.4} speed={0.2} color="#D9C395" opacity={0.7} />
         <OrbitControls
           enablePan={false}
           enableZoom={false}

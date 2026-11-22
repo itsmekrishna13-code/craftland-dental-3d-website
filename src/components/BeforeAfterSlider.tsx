@@ -108,7 +108,9 @@ export function BeforeAfterSlider({
           src={after}
           alt={altAfter}
           label="After · sample"
-          loading="eager"
+          loading="lazy"
+          width={560}
+          height={700}
           className="h-full w-full"
           imgClassName="pointer-events-none"
         />
@@ -120,7 +122,9 @@ export function BeforeAfterSlider({
           src={before}
           alt={altBefore}
           label="Before · sample"
-          loading="eager"
+          loading="lazy"
+          width={560}
+          height={700}
           className="h-full w-full"
           imgClassName="pointer-events-none"
         />

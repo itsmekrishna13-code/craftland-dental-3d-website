@@ -66,6 +66,12 @@
   section[id] {
     scroll-margin-top: 4.5rem;
   }
+
+  /* Offscreen sections skip layout/paint; they render normally on scroll. */
+  main > section:not(#home) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
 }
 
 @layer utilities {

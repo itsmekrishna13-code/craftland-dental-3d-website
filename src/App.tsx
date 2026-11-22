@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import Loader from "./components/Loader";
 import Navbar from "./components/Navbar";
@@ -15,10 +16,20 @@ import Booking from "./components/Booking";
 import FAQ from "./components/FAQ";
 import FinalCTA from "./components/FinalCTA";
 import Footer from "./components/Footer";
+import FloatingActions from "./components/FloatingActions";
 
 export default function App() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
+
+  // The intro loader covers the page anyway; mount the rest of the sections
+  // once the browser is idle so the first paint only builds the hero.
+  const [mountRest, setMountRest] = useState(false);
+  useEffect(() => {
+    const enable = () => setMountRest(true);
+    if ("requestIdleCallback" in window) window.requestIdleCallback(enable, { timeout: 1200 });
+    else window.setTimeout(enable, 600);
+  }, []);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-ivory text-ink">
@@ -39,21 +50,26 @@ export default function App() {
 
       <main id="main">
         <Hero />
-        <About />
-        <Features />
-        <Treatments />
-        <DentalExperience />
-        <SmileGallery />
-        <Doctors />
-        <ClinicTour />
-        <Technology />
-        <Testimonials />
-        <Booking />
-        <FAQ />
-        <FinalCTA />
+        {mountRest && (
+          <>
+            <About />
+            <Features />
+            <Treatments />
+            <DentalExperience />
+            <SmileGallery />
+            <Doctors />
+            <ClinicTour />
+            <Technology />
+            <Testimonials />
+            <Booking />
+            <FAQ />
+            <FinalCTA />
+          </>
+        )}
       </main>
 
       <Footer />
+      <FloatingActions />
     </div>
   );
 }

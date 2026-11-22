@@ -31,11 +31,11 @@ import {
 export const SITE = {
   name: "CRAFTLAND DENTAL",
   tagline: "Where Advanced Dentistry Meets Beautiful Smiles.",
-  phone: "+1 (555) 014-2290",
-  phoneHref: "tel:+15550142290",
+  phone: "(615) 555-0147",
+  phoneHref: "tel:+16155550147",
   email: "hello@craftlanddental.example",
   address: "128 Placeholder Avenue, Suite 400, Your City",
-  emergency: "+1 (555) 014-2911",
+  emergency: "(615) 555-0147",
 };
 
 export const NAV_LINKS = [
@@ -62,6 +62,7 @@ const px = (id: number, w: number, h: number, ext: "jpeg" | "png" = "jpeg") =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.${ext}?auto=compress&cs=tinysrgb&fit=crop&h=${h}&w=${w}`;
 
 export const MEDIA = {
+  heroPoster: "/images/hero-tooth.webp",
   heroVideo: "https://videos.pexels.com/video-files/6763242/6763242-hd_1920_1080_25fps.mp4",
   heroVideoPoster: px(6193194, 1600, 900),
   tourVideo: "https://videos.pexels.com/video-files/14934108/14934108-uhd_3840_2160_25fps.mp4",
@@ -90,8 +91,8 @@ export const GALLERY_CASES = [
     title: "Whitening & Alignment",
     treatment: "Teeth whitening · Clear aligners",
     timeline: "Illustrative timeline · 10 weeks",
-    before: "/images/gallery/before-1.jpg",
-    after: "/images/gallery/after-1.jpg",
+    before: "/images/gallery/before-1.webp",
+    after: "/images/gallery/after-1.webp",
     note: "Brighter shade and refined alignment of the front teeth.",
   },
   {
@@ -99,8 +100,8 @@ export const GALLERY_CASES = [
     title: "Restorative Refinement",
     treatment: "Dental crowns · Bonding",
     timeline: "Illustrative timeline · 6 weeks",
-    before: "/images/gallery/before-2.jpg",
-    after: "/images/gallery/after-2.jpg",
+    before: "/images/gallery/before-2.webp",
+    after: "/images/gallery/after-2.webp",
     note: "Worn and chipped edges rebuilt to natural proportions.",
   },
   {
@@ -108,8 +109,8 @@ export const GALLERY_CASES = [
     title: "Gum-line & Veneer Harmony",
     treatment: "Dental veneers · Gum contouring",
     timeline: "Illustrative timeline · 8 weeks",
-    before: "/images/gallery/before-3.jpg",
-    after: "/images/gallery/after-3.jpg",
+    before: "/images/gallery/before-3.webp",
+    after: "/images/gallery/after-3.webp",
     note: "Balanced gum line with proportionate, even-toned veneers.",
   },
 ];

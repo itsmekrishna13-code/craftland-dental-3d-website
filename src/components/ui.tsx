@@ -259,6 +259,8 @@ export function SafeImage({
   loading = "lazy",
   reveal = false,
   style,
+  width = 1200,
+  height = 900,
 }: {
   src: string;
   alt: string;
@@ -268,6 +270,8 @@ export function SafeImage({
   loading?: "lazy" | "eager";
   reveal?: boolean;
   style?: CSSProperties;
+  width?: number;
+  height?: number;
 }) {
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
   const ref = useRef<HTMLDivElement>(null);
@@ -293,6 +297,8 @@ export function SafeImage({
         <motion.img
           src={src}
           alt={alt}
+          width={width}
+          height={height}
           loading={loading}
           decoding="async"
           onLoad={() => setStatus("loaded")}
