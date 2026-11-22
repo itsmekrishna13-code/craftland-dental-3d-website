@@ -36,9 +36,14 @@ export default function About() {
           <div aria-hidden className="absolute -inset-4 -z-10 translate-x-4 translate-y-4 rounded-[2rem] border border-gold/35" />
           <motion.div style={{ y: mainY }} className="relative aspect-[4/5] w-[86%] overflow-hidden rounded-[2rem]">
             <RevealImage
+              immediate
               src={MEDIA.about}
               alt="Dentist consulting with a patient in a bright CRAFTLAND DENTAL treatment suite"
               label="Clinic photography"
+              loading="eager"
+              width={1400}
+              height={1000}
+              style={{ aspectRatio: "4 / 5" }}
               className="h-full w-full"
             />
           </motion.div>
@@ -48,9 +53,14 @@ export default function About() {
             className="absolute bottom-[-6%] right-0 aspect-square w-[46%] overflow-hidden rounded-[1.6rem] border-[10px] border-ivory shadow-[0_30px_60px_-30px_rgba(17,36,25,0.5)]"
           >
             <RevealImage
+              immediate
               src={MEDIA.aboutSecondary}
               alt="Smiling patient at a CRAFTLAND DENTAL reception"
               label="Patient experience"
+              loading="eager"
+              width={900}
+              height={1100}
+              style={{ aspectRatio: "1 / 1" }}
               className="h-full w-full"
             />
           </motion.div>

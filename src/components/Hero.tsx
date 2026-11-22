@@ -119,7 +119,7 @@ export default function Hero() {
 
       <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-6">
         <motion.div style={{ y: textY }} className="relative z-10 lg:col-span-6">
-          <Reveal>
+          <Reveal immediate>
             <div className="inline-flex items-center gap-3 rounded-full border border-forest/15 bg-cream/80 px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-forest">
               <span className="relative flex h-2 w-2">
                 <span className="animate-pulse-ring absolute inset-0 rounded-full bg-gold" />
@@ -130,12 +130,12 @@ export default function Hero() {
           </Reveal>
 
           <h1 className="mt-8 font-serif text-[3.1rem] leading-[0.98] text-forest-deep sm:text-7xl lg:text-[5.4rem] xl:text-[6.2rem]">
-            <SplitWords as="span" text="Your Smile," className="block" />
-            <SplitWords as="span" text="Crafted to" className="block" delay={0.2} />
-            <SplitWords as="span" text="Perfection." className="block italic text-gold" delay={0.4} />
+            <SplitWords as="span" text="Your Smile," className="block" immediate />
+            <SplitWords as="span" text="Crafted to" className="block" delay={0.2} immediate />
+            <SplitWords as="span" text="Perfection." className="block italic text-gold" delay={0.4} immediate />
           </h1>
 
-          <Reveal delay={0.5}>
+          <Reveal delay={0.5} immediate>
             <p className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg text-pretty">
               Welcome to <span className="font-semibold text-forest">CRAFTLAND DENTAL</span> — a boutique dental studio where
               advanced technology, artistry and patient-first care come together. Every treatment is planned around your
@@ -143,7 +143,7 @@ export default function Hero() {
             </p>
           </Reveal>
 
-          <Reveal delay={0.65} className="mt-10 flex flex-wrap items-center gap-4">
+          <Reveal delay={0.65} className="mt-10 flex flex-wrap items-center gap-4" immediate>
             <Button href="#contact" magnetic>
               Book an Appointment
               <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
@@ -153,7 +153,7 @@ export default function Hero() {
             </Button>
           </Reveal>
 
-          <Reveal delay={0.8} className="mt-12 grid max-w-xl grid-cols-3 gap-4 border-t border-forest/10 pt-8 sm:gap-8">
+          <Reveal delay={0.8} className="mt-12 grid max-w-xl grid-cols-3 gap-4 border-t border-forest/10 pt-8 sm:gap-8" immediate>
             {STATS.slice(0, 3).map((s) => (
               <div key={s.label}>
                 <p className="font-serif text-3xl text-forest-deep sm:text-4xl">

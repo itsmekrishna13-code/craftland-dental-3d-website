@@ -9,7 +9,7 @@ export default function Loader() {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
-    const t = window.setTimeout(() => setShow(false), 2100);
+    const t = window.setTimeout(() => setShow(false), 1100);
     return () => window.clearTimeout(t);
   }, []);
 
@@ -20,7 +20,7 @@ export default function Loader() {
           key="loader"
           aria-hidden
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-forest-deep text-ivory"
-          exit={{ y: "-100%", transition: { duration: 1.1, ease: [0.76, 0, 0.24, 1] } }}
+          exit={{ y: "-100%", transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] } }}
         >
           <motion.div
             initial={{ scale: 0.6, opacity: 0, rotate: -25 }}

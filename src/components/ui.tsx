@@ -25,9 +25,14 @@ type RevealProps = {
   y?: number;
   className?: string;
   duration?: number;
+  immediate?: boolean;
 } & Omit<HTMLMotionProps<"div">, "children">;
 
-export function Reveal({ children, delay = 0, y = 36, className, duration = 1, ...rest }: RevealProps) {
+export function Reveal({ children, delay = 0, y = 36, className, duration = 1, immediate = false, ...rest }: RevealProps) {
+  // Above-the-fold copy must paint at first render rather than waiting on an
+  // IntersectionObserver-driven opacity transition.
+  if (immediate) return <div className={className}>{children}</div>;
+
   return (
     <motion.div
       className={className}
@@ -52,15 +57,28 @@ export function SplitWords({
   className,
   delay = 0,
   stagger = 0.06,
+  immediate = false,
 }: {
   text: string;
   as?: "h1" | "h2" | "h3" | "span" | "p";
   className?: string;
   delay?: number;
   stagger?: number;
+  immediate?: boolean;
 }) {
   const Tag = motion[as] as typeof motion.span;
   const words = text.split(" ");
+  if (immediate) {
+    return (
+      <Tag className={className} aria-label={text}>
+        {words.map((word, i) => (
+          <span key={`${word}-${i}`} className="inline-block overflow-hidden align-bottom pr-[0.25em] last:pr-0">
+            <span className="inline-block">{word}</span>
+          </span>
+        ))}
+      </Tag>
+    );
+  }
   return (
     <Tag
       className={className}
@@ -314,7 +332,17 @@ export function SafeImage({
 }
 
 /** Image that unveils with a clip-path wipe on scroll. */
-export function RevealImage(props: Parameters<typeof SafeImage>[0]) {
+export function RevealImage({ immediate = false, ...props }: Parameters<typeof SafeImage>[0] & { immediate?: boolean }) {
+  // Images near the top of a section must never stay hidden behind a
+  // scroll-triggered clip-path: render them eagerly with no reveal gate.
+  if (immediate) {
+    return (
+      <div className={props.className}>
+        <SafeImage {...props} className="h-full w-full" />
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ clipPath: "inset(0 0 100% 0)" }}
